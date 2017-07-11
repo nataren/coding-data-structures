@@ -1,4 +1,4 @@
 *.exe
 *.mdb
-bin/*
-obj/*
+bin/
+obj/
