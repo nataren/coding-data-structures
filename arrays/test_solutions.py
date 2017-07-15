@@ -1,9 +1,13 @@
+import pytest
+
 from solutions import contains_duplicates
 
-import pytest
 class TestArraySolutions(object):
+    def test_does_not_contains_on_empty_string(self):
+        assert not contains_duplicates("")
+
     def test_does_not_contains_duplicates(self):
-        assert False == contains_duplicates("abcde")
+        assert not contains_duplicates("abcde")
 
     def test_contains_duplicates(self):
         assert contains_duplicates("abcdea")
@@ -12,4 +16,7 @@ class TestArraySolutions(object):
         assert contains_duplicates("aa")
 
     def test_contains_duplicates_at_the_end(self):
-        assert contains_duplicates("abcdeaxyz")
+        assert contains_duplicates("abcdexyza")
+
+    def test_contains_duplicates_in_the_middle(self):
+        assert contains_duplicates("abcdefgaxyz")
