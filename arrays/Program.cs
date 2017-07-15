@@ -2,17 +2,36 @@
 
 namespace Kata {
     public class ResizableArray<T> {
+
+        // Fields
         private T[] _items;
-        private int _initCapacity;
         private int _inserted;
 
+        // Constructors
         public ResizableArray(int capacity = 10) {
             _items = new T[capacity];
-            _initCapacity = capacity;
             _inserted = 0;
         }
 
+        public ResizableArray(ResizableArray<T> source, int capacity) {
+            _items = new T[capacity];
+            _inserted = 0;
+            source.Items.CopyTo(_items, 0);
+        }
+
+        // Properties
+        public int Length { get { return _items.Length; }}
         public T[] Items { get { return _items; }}
+
+        // Methods
+        public T this[int index] {
+            get {
+                return _items[index];
+            }
+            set {
+                _items[index] = value;
+            }
+        }
 
         public void Add(T item) {
             if(_inserted + 1 > _items.Length) {
