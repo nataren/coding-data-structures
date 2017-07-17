@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Kata {
-    public class ResizableArray<T> {
+    public class ResizableArray<T> : IEnumerable<T> {
 
         // Fields
         private T[] _items;
@@ -42,6 +45,16 @@ namespace Kata {
             }
             _items[_inserted] = item;
             _inserted++;
+        }
+
+        public void Disposable() {}
+
+        public IEnumerator<T> GetEnumerator() {
+            return _items.Cast<T>().GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator() {
+            return _items.GetEnumerator();
         }
     }
 

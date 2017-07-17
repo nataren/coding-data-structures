@@ -1,4 +1,5 @@
 *.exe
+log*
 *.mdb
 bin/
 obj/

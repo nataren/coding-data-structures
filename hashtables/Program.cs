@@ -52,20 +52,37 @@ namespace Kata {
         }
 
         public void Add(TKey key, TValue value) {
-            if(_inserted + 1 >= _buckets.Length) {
-                var newArray = new ResizableArray<LinkedList<KeyPair<TKey, TValue>>>(_buckets, _buckets.Length * 2);
+            if(_inserted + 1 > _buckets.Length) {
+                var newArray = new ResizableArray<LinkedList<KeyPair<TKey, TValue>>>(_buckets.Length * 2);
+                var keyPairsToRehash = new List<KeyPair<TKey, TValue>>();
+                foreach(var bucket in _buckets) {
+                    if(bucket == null) {
+                        continue;
+                    }
+                    foreach(KeyPair<TKey, TValue> pair in bucket) {
+                        keyPairsToRehash.Add(pair);
+                    }
+                }
                 _buckets = newArray;
+
+                // Add them back in
+                foreach(var pair in keyPairsToRehash) {
+                    AddHelper(pair.Key, pair.Value);
+                }
             }
+            AddHelper(key, value);
+        }
+
+        private void AddHelper(TKey key, TValue value) {
             var i = Hash(key) % _buckets.Length;
-            Console.WriteLine($"key={key}, Hash(key)={Hash(key)}, buckets.Length={_buckets.Length}, i={i}");
-            var bucketList = _buckets[i];
-            if(bucketList == null) {
-                bucketList = new LinkedList<KeyPair<TKey, TValue>>();
-                _buckets[i] = bucketList;
+            var bucket = _buckets[i];
+            if(bucket == null) {
+                bucket = new LinkedList<KeyPair<TKey, TValue>>();
+                _buckets[i] = bucket;
             }
 
             // TODO: Handle duplicates
-            bucketList.Add(new Node<KeyPair<TKey, TValue>>(new KeyPair<TKey, TValue>(key, value)));
+            bucket.Add(new Node<KeyPair<TKey, TValue>>(new KeyPair<TKey, TValue>(key, value)));
             _inserted++;
         }
 
@@ -74,8 +91,14 @@ namespace Kata {
         }
 
         public bool TryFind(TKey key, out TValue value) {
-            var i = Hash(key) % _buckets.Length;
-            var node = _buckets[i].Find(new KeyPair<TKey, TValue>(key, default(TValue)));
+            var hash = Hash(key);
+            var i = hash % _buckets.Length;
+            var bucket =  _buckets[i];
+            if(bucket == null) {
+                bucket = new LinkedList<KeyPair<TKey, TValue>>();
+                _buckets[i] = bucket;
+            }
+            var node = bucket.Find(new KeyPair<TKey, TValue>(key, default(TValue)));
             if(node != null) {
                 value = node.Value.Value;
                 return true;
@@ -87,17 +110,19 @@ namespace Kata {
 
     class Program {
         static void Main(string[] args) {
-            var dict = new HashTable<string, int>(3);
-            dict.Add("keynumberone", 1);
-            dict.Add("keynumbertwo", 2);
-            dict.Add("keynumberthree", 3);
-
-            Find<string, int>(dict, "keynumberthree");
+            var dict = new HashTable<string, int>(100);
+            var COUNT = 12345;
+            for(var i = 0; i < COUNT; i++) {
+                dict.Add("key" + i.ToString(), i);
+            }
+            for(var i = COUNT - 1; i >= 0; i--) {
+                Find<string, int>(dict, "key" + i.ToString());
+            }
         }
 
         static void Find<K, V>(HashTable<K, V> dict, K key) {
             V result;
-            Console.WriteLine("Found `{0}`? {1}, value=`{2}`", key, dict.TryFind(key, out result), result);
+            var found = dict.TryFind(key, out result);
         }
     }
 }
