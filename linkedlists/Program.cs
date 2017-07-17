@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 
 //--- Types ---
@@ -24,7 +25,7 @@ public class Node<T> {
     }
 }
 
-public class LinkedList<T> {
+public class LinkedList<T> : IEnumerable<T> {
 
     //--- Fields ---
     private Node<T> Head;
@@ -77,6 +78,57 @@ public class LinkedList<T> {
         return null;
     }
 
+    class LinkedListEnumerator<T> : IEnumerator<T> {
+
+        // Fields
+        private LinkedList<T> _ts;
+        private bool _inited;
+        private Node<T> _currentNode;
+
+        // Constructor
+        public LinkedListEnumerator(LinkedList<T> ts) {
+            _ts = ts;
+        }
+
+        // Properties
+        public T Current { get; private set; }
+
+        object IEnumerator.Current {
+            get {
+                return Current;
+            }
+        }
+
+        // Methods
+        public void Dispose() {
+        }
+
+        public bool MoveNext() {
+            if(!_inited) {
+                _currentNode = _ts.Head;
+                Current = _currentNode != default(Node<T>) ? _currentNode.Value : default(T);
+                _inited = true;
+            } else {
+                _currentNode = _currentNode != default(Node<T>) ? _currentNode.Next : default(Node<T>);
+                Current = _currentNode != default(Node<T>) ? _currentNode.Value : default(T);
+            }
+            return _currentNode != default(Node<T>);
+        }
+
+        public void Reset() {
+            _inited = false;
+            _currentNode = default(Node<T>);
+        }
+    }
+
+    public IEnumerator<T> GetEnumerator() {
+        return new LinkedListEnumerator<T>(this);
+    }
+
+    IEnumerator IEnumerable.GetEnumerator() {
+        throw new NotImplementedException();
+    }
+
     public void PrintAll() {
         var elements = new T[Length];
         var current = Head;
@@ -99,6 +151,8 @@ public static class Driver {
         if(currentLength <= 0) {
             return;
         }
-        l.PrintAll();
+        foreach(var node in l) {
+            Console.WriteLine(node);
+        }
     }
 }
