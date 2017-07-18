@@ -2,6 +2,7 @@ import pytest
 
 from solutions import contains_duplicates
 from solutions import check_permutation
+from solutions import urlify
 
 class TestContainsDuplicatesSolution(object):
     def test_does_not_contains_on_empty_string(self):
@@ -42,6 +43,15 @@ class TestCheckPermutation(object):
     def test_multiple_characters_permutation(self):
         assert check_permutation('abcd', 'dcba')
 
+class TestUrlify(object):
+    def test_empty_string(self):
+        assert '' == urlify('')
 
+    def test_many_spaces(self):
+        assert 'a%20b%20c%20d%20%20e' == urlify('a b c d  e')
 
+    def test_no_encoding(self):
+        assert 'abc' == urlify('abc')
 
+    def test_single_space_is_replaced(self):
+        assert 'a%20b' == urlify('a b')

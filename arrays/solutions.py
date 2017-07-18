@@ -10,7 +10,7 @@ def check_permutation(s1, s2):
         return False
 
     s1_counts = [None] * 128
-    for (c, x) in [(c, 1) for c in s1]:
+    for c in s1:
         i = ord(c)
         if s1_counts[i] == None:
             s1_counts[i] = 1
@@ -18,7 +18,7 @@ def check_permutation(s1, s2):
             s1_counts[i] += 1
 
     s2_counts = [None] * 128
-    for (c, x) in [(c, 1) for c in s2]:
+    for c in s2:
         i = ord(c)
         if s2_counts[i] == None:
             s2_counts[i] = 1
@@ -26,3 +26,7 @@ def check_permutation(s1, s2):
             s2_counts[i] += 1
     return s1_counts == s2_counts
 
+def urlify(s):
+    return ''.join(c for c in [
+        x if x != ' ' else '%20' for x in s
+    ])
