@@ -53,6 +53,7 @@ namespace Kata {
 
         public void Add(TKey key, TValue value) {
             if(_inserted + 1 > _buckets.Length) {
+                Console.WriteLine($"Growing the table from {_buckets.Length} to {_buckets.Length * 2}");
                 var newArray = new ResizableArray<LinkedList<KeyPair<TKey, TValue>>>(_buckets.Length * 2);
                 var keyPairsToRehash = new List<KeyPair<TKey, TValue>>();
                 foreach(var bucket in _buckets) {
@@ -67,14 +68,16 @@ namespace Kata {
 
                 // Add them back in
                 foreach(var pair in keyPairsToRehash) {
-                    AddHelper(pair.Key, pair.Value);
+                    AddHelper(pair.Key, pair.Value, false);
                 }
             }
             AddHelper(key, value);
         }
 
-        private void AddHelper(TKey key, TValue value) {
-            var i = Hash(key) % _buckets.Length;
+        private void AddHelper(TKey key, TValue value, bool increment = true) {
+            var hash = Hash(key);
+            var i = hash % _buckets.Length;
+            Console.WriteLine($"key={key}, value={value}, hash={hash}, i={i}");
             var bucket = _buckets[i];
             if(bucket == null) {
                 bucket = new LinkedList<KeyPair<TKey, TValue>>();
@@ -83,7 +86,9 @@ namespace Kata {
 
             // TODO: Handle duplicates
             bucket.Add(new Node<KeyPair<TKey, TValue>>(new KeyPair<TKey, TValue>(key, value)));
-            _inserted++;
+            if(increment) {
+                _inserted++;
+            }
         }
 
         public void Remove(TKey key) {
@@ -110,8 +115,10 @@ namespace Kata {
 
     class Program {
         static void Main(string[] args) {
-            var dict = new HashTable<string, int>(100);
+            var CAPACITY = 3;
+            var dict = new HashTable<string, int>(12345);
             var COUNT = 12345;
+            Console.WriteLine($"Hashtable with capacity {CAPACITY}, will insert {COUNT} items");
             for(var i = 0; i < COUNT; i++) {
                 dict.Add("key" + i.ToString(), i);
             }
@@ -123,6 +130,11 @@ namespace Kata {
         static void Find<K, V>(HashTable<K, V> dict, K key) {
             V result;
             var found = dict.TryFind(key, out result);
+            if(found) {
+                Console.WriteLine($"FOUND {key}={result}");
+            } else {
+                Console.WriteLine($"NOT FOUND: {key}");
+            }
         }
     }
 }
