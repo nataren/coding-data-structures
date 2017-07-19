@@ -75,12 +75,36 @@ namespace Kata {
     }
 }
 
+public static class Solutions {
+    public static string Urlify(string s, int length) {
+        var urlified = new char[s.Length];
+        for(int i = 0, j = 0; i < length; i++) {
+            var c = s[i];
+            if(c == ' ') {
+                urlified[j] = '%';
+                urlified[j+1] = '2';
+                urlified[j+2] = '0';
+                j += 3;
+            } else {
+                urlified[j] = c;
+                j++;
+            }
+        }
+        return string.Join("", urlified);
+    }
+}
+
 class Driver {
     public static void Main() {
+        /*
         var sb = new Kata.StringBuilder();
         for(var i = 0; i < 1503; i++) {
             sb.Append("my string" + i.ToString() + "\n");
         }
         Console.WriteLine(sb.ToString());
+        */
+
+        Console.WriteLine("urlifiy('xyz')={0}", Solutions.Urlify("", 0));
+        Console.WriteLine("urlifiy('Mr John Smith    ')={0}", Solutions.Urlify("Mr John Smith    ", 13));
     }
 }
