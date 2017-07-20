@@ -31,48 +31,37 @@ func palindrome(s string) bool {
 }
 
 func factorial(n int) int {
-	if n <= 0 {
-		return 1
+	acc := 1
+	for i := n; i >= 1; i-- {
+		acc *= i
 	}
-	return n * factorial(n-1)
+	return acc
 }
 
-type Permutation struct {
-	Original  string
-	Sanitized string
-}
-
-func permutations(s string) []Permutation {
-	sanitized := removeSpaces(s)
-	runes := []rune(sanitized)
-	n := len(runes)
+func permutations(s string) []string {
+	var perms []string
+	n := len([]rune(s))
 	if s == "" || n == 1 {
-		return []Permutation{
-			Permutation{Original: s, Sanitized: s},
-		}
+		return []string{s}
 	}
 	if n == 2 {
-		return []Permutation{
-			Permutation{Original: s, Sanitized: sanitized},
-			Permutation{Original: s, Sanitized: reverse(sanitized)},
+		return []string{
+			s,
+			reverse(s),
 		}
 	}
-	var perms []Permutation
-	i := 0
-	for _, c := range sanitized {
-		for _, p := range permutations(sanitized[:i] + sanitized[i+1:]) {
-			perms = append(perms, Permutation{Original: p.Original, Sanitized: string(c) + p.Sanitized})
+	for i, c := range s {
+		for _, p := range permutations(s[:i] + s[i+1:]) {
+			perms = append(perms, string(c)+p)
 		}
-		i++
 	}
 	return perms
 }
 
 func PalindromePermutation(s string) (bool, string) {
 	for _, permutation := range permutations(s) {
-		// fmt.Printf("%v,%v\n", i, permutation.Sanitized)
-		if palindrome(permutation.Sanitized) {
-			return true, permutation.Sanitized
+		if palindrome(permutation) {
+			return true, permutation
 		}
 	}
 	return false, ""
@@ -81,5 +70,5 @@ func PalindromePermutation(s string) (bool, string) {
 func main() {
 	phrase := "Tact Coa"
 	isPalindrome, perm := PalindromePermutation(phrase)
-	fmt.Printf("PalindromePermutation(%v)=[%v, `%v`]\n", phrase, isPalindrome, perm)
+	fmt.Printf("PalindromePermutation(`%v`)=[%v, `%v`]\n", phrase, isPalindrome, perm)
 }
