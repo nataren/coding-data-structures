@@ -1,7 +1,6 @@
-package main
+package arrays
 
 import (
-	"fmt"
 	"strings"
 )
 
@@ -65,10 +64,4 @@ func PalindromePermutation(s string) (bool, string) {
 		}
 	}
 	return false, ""
-}
-
-func main() {
-	phrase := "Tact Coa"
-	isPalindrome, perm := PalindromePermutation(phrase)
-	fmt.Printf("PalindromePermutation(`%v`)=[%v, `%v`]\n", phrase, isPalindrome, perm)
 }
