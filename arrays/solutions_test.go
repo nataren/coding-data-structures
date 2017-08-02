@@ -12,6 +12,7 @@ func TestPalindromeExamples(t *testing.T) {
 		{"Tact Coa", true},
 		{"a   a b ", true},
 		{"", true},
+		// {"am  analpa ncaaanplanama", true},
 	}
 	for _, sample := range samples {
 		isIt, _ := PalindromePermutation(sample.input)
