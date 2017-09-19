@@ -3,6 +3,7 @@ import pytest
 from solutions import contains_duplicates
 from solutions import check_permutation
 from solutions import urlify
+from solutions import oneway
 
 class TestContainsDuplicatesSolution(object):
     def test_does_not_contains_on_empty_string(self):
@@ -55,3 +56,50 @@ class TestUrlify(object):
 
     def test_single_space_is_replaced(self):
         assert 'a%20b' == urlify('a b')
+
+class TestOneAway(object):
+    def test_changes_are_acceptable(self):
+        s1 = 'abcd'
+        s2 = 'abcd'
+        assert oneway(s1, s2)
+
+    def test_one_change_is_acceptable(self):
+        s1 = 'abcde'
+        s2 = 'jbcde'
+        assert oneway(s1, s2)
+
+    def test_one_change_is_acceptable_2(self):
+        s1 = 'abcde'
+        s2 = 'abcxe'
+        assert oneway(s1, s2)
+
+    def test_more_than_one_removal_is_not_one_change_away(self):
+        s1 = 'abc'
+        s2 = 'c'
+        assert False == oneway(s1, s2)
+
+
+    def test_more_than_one_removal_is_not_one_change_away_2(self):
+        s1 = 'abc'
+        s2 = 'c'
+        assert False == oneway(s2, s1)
+
+    def test_1(self):
+        s1 = 'pale'
+        s2 = 'ple'
+        assert oneway(s1, s2)
+
+    def test_2(self):
+        s1 = 'pales'
+        s2 = 'pale'
+        assert oneway(s1, s2)
+
+    def test_3(self):
+        s1 = 'pale'
+        s2 = 'bale'
+        assert oneway(s1, s2)
+
+    def test_4(self):
+        s1 = 'pale'
+        s2 = 'bake'
+        assert False == oneway(s1, s2)
