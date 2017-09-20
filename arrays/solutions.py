@@ -70,3 +70,40 @@ def urlify(s):
     return ''.join(c for c in [
         x if x != ' ' else '%20' for x in s
     ])
+
+def compress(s):
+    class Item(object):
+        def __init__(self, character, counter):
+            self.character  = character
+            self.counter = counter
+
+    if s is None or s == '':
+        return s
+
+    tracker = []
+    prev = None
+    current = None
+    current_counter = 0
+
+    for i in range(0, len(s)):
+        current = s[i]
+
+        if prev == current:
+            current_counter += 1
+            t = tracker[len(tracker) - 1]
+            t.counter = current_counter
+        else:
+            prev = current
+            current_counter = 1
+            tracker.append(Item(
+                current,
+                current_counter
+            ))
+
+    ns = ''
+
+    for t in tracker:
+        ns += t.character + str(t.counter)
+
+    return ns if len(ns) < len(s) else s
+

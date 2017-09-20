@@ -4,6 +4,7 @@ from solutions import contains_duplicates
 from solutions import check_permutation
 from solutions import urlify
 from solutions import oneway
+from solutions import compress
 
 class TestContainsDuplicatesSolution(object):
     def test_does_not_contains_on_empty_string(self):
@@ -103,3 +104,7 @@ class TestOneAway(object):
         s1 = 'pale'
         s2 = 'bake'
         assert False == oneway(s1, s2)
+
+class TestCompress(object):
+    def test_compress_1(self):
+        assert 'a2b1c5a3' == compress('aabcccccaaa')
