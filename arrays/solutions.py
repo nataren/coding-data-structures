@@ -71,7 +71,7 @@ def urlify(s):
         x if x != ' ' else '%20' for x in s
     ])
 
-def compress(s):
+def compress_v1(s):
     class Item(object):
         def __init__(self, character, counter):
             self.character  = character
@@ -107,3 +107,21 @@ def compress(s):
 
     return ns if len(ns) < len(s) else s
 
+def compress(s):
+    if s is None or s == '':
+        return s
+
+    n = len(s)
+    k = 0
+    new_s = ''
+
+    for i in range(0, n):
+        k += 1
+        c = s[i] 
+        if i + 1 < n and c == s[i+1]:
+            continue
+        else:
+            new_s += c + str(k)
+            k = 0
+
+    return new_s if len(new_s) < n else s
