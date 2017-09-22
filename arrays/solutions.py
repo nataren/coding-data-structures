@@ -164,3 +164,18 @@ def remove_dups(ll):
         else:
             uniques = prepend(uniques, node.data)
         node = node.next
+
+def kth_to_last(k, l):
+    if l is None:
+        return None
+
+    buffer = [None] * k
+    i = 0
+    n = l
+
+    while n:
+        buffer[i % k] = n.data
+        n = n.next
+        i += 1
+
+    return buffer[(i+1-k) % k]
