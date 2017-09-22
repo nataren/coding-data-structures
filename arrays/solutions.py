@@ -125,3 +125,42 @@ def compress(s):
             k = 0
 
     return new_s if len(new_s) < n else s
+
+def seen(ll, data):
+    if ll is None:
+        return False
+    node = ll
+    while node:
+        if node.data == data:
+            return True
+        node = node.next
+    else:
+        return False
+
+def prepend(n, data):
+    new_node = Node(None, data, n)
+    n.prev = new_node
+    return new_node
+
+class Node(object):
+    def __init__(self, prev, data, next):
+        self.prev = prev
+        self.data = data
+        self.next = next
+
+def remove_dups(ll):
+    if ll is None:
+        return
+
+    uniques = Node(None, ll.data, None)
+    node = ll.next
+
+    while node:
+        if seen(uniques, node.data):
+            if node.prev:
+                node.prev.next = node.next
+            if node.next:
+                node.next.prev = node.prev
+        else:
+            uniques = prepend(uniques, node.data)
+        node = node.next

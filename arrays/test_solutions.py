@@ -5,6 +5,9 @@ from solutions import check_permutation
 from solutions import urlify
 from solutions import oneway
 from solutions import compress
+from solutions import Node
+from solutions import remove_dups
+from solutions import prepend
 
 class TestContainsDuplicatesSolution(object):
     def test_does_not_contains_on_empty_string(self):
@@ -108,3 +111,43 @@ class TestOneAway(object):
 class TestCompress(object):
     def test_compress_1(self):
         assert 'a2b1c5a3' == compress('aabcccccaaa')
+
+class TestRemoveDups(object):
+    def length(self, n):
+        k = 0
+        node = n
+        while node:
+            k += 1
+            node = node.next
+        return k
+
+    def test_remove_dups(self):
+        ll = Node(None, 5, None)
+        ll = prepend(ll, 4)
+        ll = prepend(ll, 4)
+        ll = prepend(ll, 3)
+        ll = prepend(ll, 2)
+        ll = prepend(ll, 1)
+        n = self.length(ll)
+        remove_dups(ll)
+        assert self.length(ll) == n - 1
+
+    def test_remove_dups(self):
+        ll = Node(None, 5, None)
+        ll = prepend(ll, 5)
+        ll = prepend(ll, 5)
+        ll = prepend(ll, 5)
+        ll = prepend(ll, 5)
+        ll = prepend(ll, 5)
+        n = self.length(ll)
+        remove_dups(ll)
+        assert self.length(ll) == n - 5
+
+
+    def test_no_removal(self):
+        ll = Node(None, 3, None)
+        ll = prepend(ll, 2)
+        ll = prepend(ll, 1)
+        n = self.length(ll)
+        remove_dups(ll)
+        assert self.length(ll) == n
