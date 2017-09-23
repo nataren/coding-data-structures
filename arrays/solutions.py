@@ -187,3 +187,15 @@ def kth_to_last(k, l):
         i += 1
 
     return buffer[(i+1-k) % k]
+
+def book_kth_to_last(k, l):
+    p1 = l
+    p2 = l
+    for i in range(0, k):
+        if not p1:
+            return None
+        p1 = p1.next
+    while p1:
+        p1 = p1.next
+        p2 = p2.next
+    return p2
