@@ -137,9 +137,17 @@ def seen(ll, data):
     else:
         return False
 
+def mkList(*args):
+    n = len(args)
+    l = None
+    for i in range(1, n+1):
+        l = prepend(l, args[n-i])
+    return l
+
 def prepend(n, data):
     new_node = Node(None, data, n)
-    n.prev = new_node
+    if n:
+        n.prev = new_node
     return new_node
 
 class Node(object):

@@ -7,8 +7,8 @@ from solutions import oneway
 from solutions import compress
 from solutions import Node
 from solutions import remove_dups
-from solutions import prepend
 from solutions import kth_to_last
+from solutions import mkList
 
 class TestContainsDuplicatesSolution(object):
     def test_does_not_contains_on_empty_string(self):
@@ -123,65 +123,41 @@ class TestRemoveDups(object):
         return k
 
     def test_remove_dups(self):
-        ll = Node(None, 5, None)
-        ll = prepend(ll, 4)
-        ll = prepend(ll, 4)
-        ll = prepend(ll, 3)
-        ll = prepend(ll, 2)
-        ll = prepend(ll, 1)
+        ll = mkList(1,2,3,4,5)
         n = self.length(ll)
         remove_dups(ll)
         assert self.length(ll) == n - 1
 
     def test_remove_dups(self):
-        ll = Node(None, 5, None)
-        ll = prepend(ll, 5)
-        ll = prepend(ll, 5)
-        ll = prepend(ll, 5)
-        ll = prepend(ll, 5)
-        ll = prepend(ll, 5)
+        ll = mkList(5,5,5,5,5,5)
         n = self.length(ll)
         remove_dups(ll)
         assert self.length(ll) == n - 5
 
 
     def test_no_removal(self):
-        ll = Node(None, 3, None)
-        ll = prepend(ll, 2)
-        ll = prepend(ll, 1)
+        ll = mkList(1,2,3)
         n = self.length(ll)
         remove_dups(ll)
         assert self.length(ll) == n
 
 class TestKthToLast(object):
     def find_2nd_to_last_even(self):
-        l = Nonde(None, 4, None)
-        l =prepend(l, 3)
-        l = prepend(l, 2)
-        l = prepend(l, 1)
+        l = mkList(1, 2, 3, 4)
         kth = kth_to_last(2, l)
         assert kth == 3
 
     def find_2nd_to_last_odd(self):
-        l = Nonde(None, 3, None)
-        l =prepend(l, 2)
-        l = prepend(l, 1)
-
+        l = mkList(1, 2, 3)
         kth = kth_to_last(2, l)
         assert kth == 2
 
     def find_3th_to_last(self):
-        l = Nonde(None, 3, None)
-        l =prepend(l, 2)
-        l = prepend(l, 1)
-
+        l = mkList(1, 2, 3)
         kth = kth_to_last(3, l)
         assert kth == 1
 
     def find_4th_to_last(self):
-        l = Nonde(None, 3, None)
-        l =prepend(l, 2)
-        l = prepend(l, 1)
-
+        l = mkList(1, 2, 3)
         kth = kth_to_last(4, l)
         assert kth == None
