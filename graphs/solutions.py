@@ -50,8 +50,8 @@ class Graph:
         pass
 
     def bfs(self):
+        q = Queue()
         for node in self.nodes:
-            q = Queue()
             node.marked = True
             q.add(node)
             while not q.is_empty():

@@ -25,7 +25,7 @@ class TestGraph:
             ])
         ]
         graph = Graph(nodes)
-        bfs_discovered_items = sorted(list(graph.bfs()))
-        expected = sorted([0, 1, 4, 5, 3, 2])
+        bfs_discovered_items = list(graph.bfs())
+        expected = [0, 5, 4, 1, 3, 2]
         assert bfs_discovered_items == expected
 
