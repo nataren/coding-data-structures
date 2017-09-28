@@ -34,3 +34,30 @@ class Queue:
 
     def is_empty(self):
         return self.first is None
+
+
+class Graph:
+    class Node:
+        def __init__(self, data, adjacents):
+            self.data = data
+            self.adjacents = adjacents
+            self.marked = False
+
+    def __init__(self, nodes = []):
+        self.nodes = nodes
+
+    def dfs(self):
+        pass
+
+    def bfs(self):
+        for node in self.nodes:
+            q = Queue()
+            node.marked = True
+            q.add(node)
+            while not q.is_empty():
+                item = q.remove()
+                yield item.data
+                for adjacent in item.adjacents:
+                    if not adjacent.marked:
+                        adjacent.marked = True
+                        q.add(adjacent)
